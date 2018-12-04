@@ -1,14 +1,11 @@
 package main
 
 import (
-	"database/sql"
 	"fmt"
 
 	"github.com/jinzhu/gorm"
 	_ "github.com/lib/pq"
 )
-
-var Db *sql.DB
 
 type Message struct {
 	ID   int    `gorm:"primary_key" json:"id"`
