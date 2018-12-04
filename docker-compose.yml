@@ -4,7 +4,7 @@ volumes:
   vendor:
   redis-data:
     driver: local
-  db:
+  postgres-data:
     driver: local
 services:
   api:
@@ -31,7 +31,7 @@ services:
     container_name: pg
     volumes:
       - ./init:/docker-entrypoint-initdb.d
-      - db:/var/lib/postgresql/data
+      - postgres-data:/var/lib/postgresql/data
     ports:
       - 5432:5432
     environment:

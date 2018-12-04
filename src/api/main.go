@@ -34,5 +34,9 @@ func main() {
 		var m = Message{Text: "gwefwahrher"}
 		c.JSON(200, m)
 	})
+	r.GET("/new", func(c *gin.Context) {
+		var m = Message{Text: "hahaha"}
+		m.Create()
+	})
 	r.Run(":5000")
 }
