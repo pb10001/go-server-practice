@@ -1,0 +1,50 @@
+version: '3'
+
+volumes:
+  vendor:
+  redis-data:
+    driver: local
+  db:
+    driver: local
+services:
+  api:
+    container_name: go_server
+    build:
+      context: .
+      dockerfile: docker/api/Dockerfile
+    volumes:
+      - ./src/api:/go/src/api
+      - vendor:/go/src/api/vendor
+    ports:
+      - 5000:5000
+    tty: true
+    depends_on:
+      - postgres
+    restart: always
+  redis:
+    image: redis
+    container_name: redis
+    volumes:
+      - redis-data:/data
+  postgres:
+    image: postgres
+    container_name: pg
+    volumes:
+      - ./init:/docker-entrypoint-initdb.d
+      - db:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=secret
+    restart: always
+  adm:
+    image: dpage/pgadmin4
+    volumes:
+      - ./pgadmin:/var/lib/pgadmin/storage
+    ports:
+      - '80:80'
+      - '443:443'
+    environment:
+      PGADMIN_DEFAULT_EMAIL: root
+      PGADMIN_DEFAULT_PASSWORD: secret
